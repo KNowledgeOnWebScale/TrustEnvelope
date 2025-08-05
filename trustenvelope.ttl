@@ -1,1 +1,90 @@
-# TODO: ontology
+@prefix bibo:    <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix te:      <https://w3id.org/trustenvelope#> .
+@prefix vann:    <http://purl.org/vocab/vann/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+# ---------------- Ontology Metadata ------------------ #
+
+<https://w3id.org/trustenvelope> a owl:Ontology ;
+    dcterms:title "Trust Envelope specification"@en ;
+    vann:preferredNamespacePrefix "te" ;
+    vann:preferredNamespaceUri "https://w3id.org/trustenvelope#" ;
+    rdfs:label "Trust Envelope specification"@en ;
+    owl:versionInfo "0.1" ;
+    # owl:versionIRI <https://w3id.org/trustenvelope/0.1> ;
+    dcterms:created "2025-08-05"^^xsd:date ;
+    # dcterms:modified "2025-xx-xx"^^xsd:date ;
+    dcterms:issued "2025-08-05"^^xsd:date ;
+    dcterms:creator <https://pod.woutslabbinck.com/profile/card#me>,
+        <https://solidweb.me/besteves4/profile/card#me>,
+        <https://ruben.verborgh.org/profile/#me> ;
+    dcterms:publisher <https://data.knows.idlab.ugent.be/person/office/#> ;
+    dcterms:abstract "A model and vocabulary that is used to represent Trust Envelopes: contextualized associations of data with its provenance and usage conditions."@en ;
+    dcterms:description "A model and vocabulary that is used to represent Trust Envelopes: contextualized associations of data with its provenance and usage conditions."@en ;
+    rdfs:comment "This is the Turtle serialisation for the Trust Envelope specification."@en ;
+    dcterms:bibliographicCitation "Cite this vocabulary as: Slabbinck, W., Esteves, B., Verborgh, V. (2025). Trust Envelope specification (Version 0.1). https://doi.org/XXX"@en ;
+    bibo:doi "xxxxx"@en ;
+    # foaf:logo <https://github.com/SolidLabResearch/ODRL-Compliance-Report-Model/blob/main/img/Compliance%20Report%20Model.svg> ;
+    # dcterms:source <http://www.w3.org/ns/odrl/2/>, <https://w3c.github.io/odrl/formal-semantics/> ;
+    dcterms:license <https://dalicc.net/licenselibrary/CC-BY-4.0> .
+
+# --------------------- Classes ----------------------- #
+
+te:TrustEnvelope a rdfs:Class, skos:Concept ;
+    rdfs:isDefinedBy te: ;
+    rdfs:label "Trust Envelope"@en ;
+    skos:definition "A Trust Envelope is a unique data document, timestamped and digitally signed by a sender, representing a singular and voluntary act of associating a data unit with context about this data unit's purported history and intended destiny."@en ;
+    rdfs:comment "The history may include provenance and/or digital signatures of its own; the destiny may include usage policies that describe how the sender wants the recipient to treat the data unit. The Trust Envelope thereby forms a two-sided evidence mechanism that enables the sender to substantiate the relevance and correctness of the data unit towards the recipient, and the recipient to prove towards third parties whether their eventual treatment of the data unit aligns with the sender's constraints."@en .
+
+te:DataProvenance a rdfs:Class, skos:Concept ;
+    rdfs:isDefinedBy te: ;
+    rdfs:label "Data Provenance"@en ;
+    skos:definition "Contextual information that captures the origin and history of data, including its source entity, entity providing the data, and issuance time."@en .
+
+te:PolicyProvenance a rdfs:Class, skos:Concept ;
+    rdfs:isDefinedBy te: ;
+    rdfs:label "Policy Provenance"@en ;
+    skos:definition "Contextual information that captures the origin and history of a policy, including entities that have usage rights over the data unit, entity that will receive the data unit, and issuance time."@en .
+
+# -------------------- Properties --------------------- #
+
+te:provenance a rdfs:Property, skos:Concept;
+    rdfs:isDefinedBy te: ;
+    rdfs:label "Provenance"@en ;
+    skos:definition "Denotes contextual information related to the origin and history of data units and policies."@en ;
+    rdfs:domain te:TrustEnvelope ; 
+    rdfs:range te:DataProvenance, te:PolicyProvenance .
+
+te:sender a rdfs:Property, skos:Concept;
+    rdfs:isDefinedBy te: ;
+    rdfs:label "Sender"@en ;
+    skos:definition "Entity that issues the trust envelope."@en ;
+    rdfs:domain te:DataProvenance ; 
+    rdfs:range xsd:anyURI .
+
+te:recipient a rdfs:Property, skos:Concept;
+    rdfs:isDefinedBy te: ;
+    skos:definition "Recipient"@en ;
+    skos:definition "Entity that receives the trust envelope."@en ;
+    rdfs:domain te:PolicyProvenance ; 
+    rdfs:range xsd:anyURI .
+
+te:rightsHolder a rdfs:Property, skos:Concept;
+    rdfs:isDefinedBy te: ;
+    rdfs:label "Rights holder"@en ;
+    skos:definition "Entity claiming to have usage rights over the data unit."@en ;
+    rdfs:domain te:PolicyProvenance ; 
+    rdfs:range xsd:anyURI .
+
+te:sign a rdfs:Property, skos:Concept;
+    rdfs:isDefinedBy te: ;
+    rdfs:label "Sign"@en ;
+    skos:definition "Denotes information about digital signatures."@en ;
+    rdfs:domain te:TrustEnvelope, te:DataProvenance, te:PolicyProvenance ; 
+    rdfs:range xsd:anyURI .

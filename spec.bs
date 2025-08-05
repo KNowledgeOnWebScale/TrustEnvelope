@@ -1,0 +1,55 @@
+<pre class='metadata'>
+Title: Trust Envelope specification
+Shortname: TE
+Level: none
+Status: LD
+Editor: Wout Slabbinck, Ghent University - imec http://idlab.ugent.be/, wout.slabbinck@ugent.be
+Editor: Beatriz Esteves, Ghent University - imec http://idlab.ugent.be/, beatriz.esteves@ugent.be
+Editor: Ruben Verborgh, Ghent University - imec http://idlab.ugent.be/, ruben.verborgh@ugent.be
+Abstract: TODO
+Markup Shorthands: markdown yes, css no
+URL: https://w3id.org/trustenvelope
+Previous Version: _ORCHESTRATOR_PREVIOUS_BUILD_FULL_LINK_
+Repository: https://github.com/KNowledgeOnWebScale/TrustEnvelope
+!License: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA-4.0</a>
+</pre>
+
+<p boilerplate="copyright">
+  <!-- This document is made available under the CC-BY-SA-4.0 License. -->
+</p>
+
+<pre class=biblio> 
+{"odrl-formal-semantics": {
+    "href": "https://w3c.github.io/odrl/formal-semantics/",
+    "title": "ODRL Formal Semantics",
+    "authors": [
+        "Nicoletta Fornara",
+        "Víctor Rodríguez-Doncel",
+        "Beatriz Esteves",
+        "Simon Steyskal",
+        "Benedict Whittam Smith"
+		]
+    }
+}
+</pre>
+
+Introd­uction {#introduction}
+============================
+
+TODO:
+
+## Terminology ## {#terminology}
+
+TODO
+
+Namespaces {#namespaces}
+=====================
+
+Commonly used namespace prefixes used in this specification:
+```turtle
+@prefix dcterms:    <http://purl.org/dc/terms/> .
+@prefix odrl:   <http://www.w3.org/ns/odrl/2/>.
+@prefix te: <https://w3id.org/trustenvelope>
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+```

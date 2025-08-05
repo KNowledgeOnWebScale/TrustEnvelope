@@ -32,7 +32,7 @@
     bibo:doi "xxxxx"@en ;
     # foaf:logo <https://github.com/SolidLabResearch/ODRL-Compliance-Report-Model/blob/main/img/Compliance%20Report%20Model.svg> ;
     # dcterms:source <http://www.w3.org/ns/odrl/2/>, <https://w3c.github.io/odrl/formal-semantics/> ;
-    dcterms:license <https://dalicc.net/licenselibrary/CC-BY-4.0> .
+    dcterms:license <https://creativecommons.org/licenses/by-sa/4.0/> .
 
 # --------------------- Classes ----------------------- #
 

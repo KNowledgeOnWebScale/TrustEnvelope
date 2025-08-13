@@ -19,17 +19,15 @@ Repository: https://github.com/KNowledgeOnWebScale/TrustEnvelope
 </p>
 
 <pre class=biblio> 
-{"odrl-formal-semantics": {
-    "href": "https://w3c.github.io/odrl/formal-semantics/",
-    "title": "ODRL Formal Semantics",
-    "authors": [
-        "Nicoletta Fornara",
-        "Víctor Rodríguez-Doncel",
-        "Beatriz Esteves",
-        "Simon Steyskal",
-        "Benedict Whittam Smith"
-		]
-    }
+{
+  "gdpr": {
+    "href": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+    "title": "Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation)"
+  },
+  "dga": {
+    "href": "http://data.europa.eu/eli/reg/2022/868/oj/eng",
+    "title": "Regulation (EU) 2022/868 of the European Parliament and of the Council of 30 May 2022 on European data governance and amending Regulation (EU) 2018/1724 (Data Governance Act)"
+  }
 }
 </pre>
 
@@ -67,7 +65,27 @@ TODO:
 Legal Considerations {#legal}
 =============================
 
-TODO
+The [Trust Envelope model](#model) was developed to be regulation-agnostic,
+to be able to tackle legal requirements from different jurisdictions,
+different branches of law, e.g., data protection or intellectual property law, and 
+different data types, e.g., personal or non-personal data.
+This is of particular importance to understand and correctly model all the parties
+that might have rights and obligations over the data unit,
+how they interplay, and how they are to be correctly interpreted and enforced.
+
+Nonetheless,
+the terms chosen to model data provenance,
+in particular related to the source entity of the data,
+where kept in line with European legislation
+such as the General Data Protection Regulation (GDPR) [[!gdpr]]
+and the Data Governance Act (DGA) [[!dga]]
+as these regulations are being followed 
+and similarly adapted in other jurisdictions' regulations.
+
+Moreover,
+by incorporating provenance and usage policies as fundamental components of trustful data exchanges,
+Trust Envelopes can be used as auditing tools by external legal authorities to assess good and poor practices of recipients,
+and possibly held as proof in judgments for the later case.
 
 Namespaces {#namespaces}
 ========================

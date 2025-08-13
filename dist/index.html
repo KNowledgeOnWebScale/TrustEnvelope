@@ -1490,7 +1490,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://w3id.org/trustenvelope" rel="canonical">
-  <meta content="3b9a7ce52a2dbdba81a663feeae8f0373f783891" name="revision">
+  <meta content="aeeee0c28e50c5b30a436205949f0c585a12d70c" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2015,7 +2015,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://knows.idlab.ugent.be/"> <img alt="KNoWS" height="48" src="logo.png"> </a></p>
    <h1 class="p-name no-ref" id="title">Trust Envelope specification</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Living Document, <time class="dt-updated" datetime="2025-08-05">5 August 2025</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Living Document, <time class="dt-updated" datetime="2025-08-13">13 August 2025</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2083,7 +2083,23 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <p>current approach on how to signatures + limitations</p>
    </ul>
    <h2 class="heading settled" data-level="6" id="legal"><span class="secno">6. </span><span class="content">Legal Considerations</span><a class="self-link" href="#legal"></a></h2>
-   <p>TODO</p>
+   <p>The <a href="#model">Trust Envelope model</a> was developed to be regulation-agnostic,
+to be able to tackle legal requirements from different jurisdictions,
+different branches of law, e.g., data protection or intellectual property law, and 
+different data types, e.g., personal or non-personal data.
+This is of particular importance to understand and correctly model all the parties
+that might have rights and obligations over the data unit,
+how they interplay, and how they are to be correctly interpreted and enforced.</p>
+   <p>Nonetheless,
+the terms chosen to model data provenance,
+in particular related to the source entity of the data,
+where kept in line with European legislation
+such as the General Data Protection Regulation (GDPR) <a data-link-type="biblio" href="#biblio-gdpr" title="Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation)">[gdpr]</a> and the Data Governance Act (DGA) <a data-link-type="biblio" href="#biblio-dga" title="Regulation (EU) 2022/868 of the European Parliament and of the Council of 30 May 2022 on European data governance and amending Regulation (EU) 2018/1724 (Data Governance Act)">[dga]</a> as these regulations are being followed 
+and similarly adapted in other jurisdictions' regulations.</p>
+   <p>Moreover,
+by incorporating provenance and usage policies as fundamental components of trustful data exchanges,
+Trust Envelopes can be used as auditing tools by external legal authorities to assess good and poor practices of recipients,
+and possibly held as proof in judgments for the later case.</p>
    <h2 class="heading settled" data-level="7" id="namespaces"><span class="secno">7. </span><span class="content">Namespaces</span><a class="self-link" href="#namespaces"></a></h2>
    <p>Commonly used namespace prefixes used in this specification:</p>
 <pre class="language-turtle highlight"><c- k>@prefix</c-> <c- nn>dcterms:</c-> <c- g>&lt;http://purl.org/dc/terms/></c-> <c- p>.</c->
@@ -2242,6 +2258,10 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-dga">[DGA]
+   <dd><a href="http://data.europa.eu/eli/reg/2022/868/oj/eng"><cite>Regulation (EU) 2022/868 of the European Parliament and of the Council of 30 May 2022 on European data governance and amending Regulation (EU) 2018/1724 (Data Governance Act)</cite></a>. URL: <a href="http://data.europa.eu/eli/reg/2022/868/oj/eng">http://data.europa.eu/eli/reg/2022/868/oj/eng</a>
+   <dt id="biblio-gdpr">[GDPR]
+   <dd><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj"><cite>Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation)</cite></a>. URL: <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">https://eur-lex.europa.eu/eli/reg/2016/679/oj</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
   </dl>

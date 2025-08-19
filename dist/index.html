@@ -1488,9 +1488,8 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
+  <meta content="Bikeshed version f3fd50cc3, updated Tue Mar 18 14:19:40 2025 -0700" name="generator">
   <link href="https://w3id.org/trustenvelope" rel="canonical">
-  <meta content="aeeee0c28e50c5b30a436205949f0c585a12d70c" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2015,7 +2014,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://knows.idlab.ugent.be/"> <img alt="KNoWS" height="48" src="logo.png"> </a></p>
    <h1 class="p-name no-ref" id="title">Trust Envelope specification</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Living Document, <time class="dt-updated" datetime="2025-08-13">13 August 2025</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Living Document, <time class="dt-updated" datetime="2025-08-19">19 August 2025</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2038,7 +2037,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>TODO</p>
+   <p>A Trust Envelope is a unique data document, timestamped and digitally signed by a sender, that represents a singular act of associating a data unit with context specific to an actual or proposed processing of the data unit by the recipient.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -2051,8 +2050,32 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      </ol>
     <li><a href="#requirements"><span class="secno">2</span> <span class="content">Requirements</span></a>
     <li><a href="#model"><span class="secno">3</span> <span class="content">Model</span></a>
-    <li><a href="#vocabulary"><span class="secno">4</span> <span class="content">Vocabulary</span></a>
-    <li><a href="#materialization"><span class="secno">5</span> <span class="content">Materialization</span></a>
+    <li>
+     <a href="#vocabulary"><span class="secno">4</span> <span class="content">Vocabulary</span></a>
+     <ol class="toc">
+      <li>
+       <a href="#Classes"><span class="secno">4.1</span> <span class="content">Classes</span></a>
+       <ol class="toc">
+        <li><a href="#TrustEnvelope"><span class="secno">4.1.1</span> <span class="content">Trust Envelope</span></a>
+        <li><a href="#DataProvenance"><span class="secno">4.1.2</span> <span class="content">Data Provenance</span></a>
+        <li><a href="#PolicyProvenance"><span class="secno">4.1.3</span> <span class="content">Policy Provenance</span></a>
+       </ol>
+      <li>
+       <a href="#Properties"><span class="secno">4.2</span> <span class="content">Properties</span></a>
+       <ol class="toc">
+        <li><a href="#Provenance"><span class="secno">4.2.1</span> <span class="content">Provenance</span></a>
+        <li><a href="#Sender"><span class="secno">4.2.2</span> <span class="content">Sender</span></a>
+        <li><a href="#Recipient"><span class="secno">4.2.3</span> <span class="content">Recipient</span></a>
+        <li><a href="#RightsHolder"><span class="secno">4.2.4</span> <span class="content">Rights holder</span></a>
+        <li><a href="#Sign"><span class="secno">4.2.5</span> <span class="content">Sign</span></a>
+       </ol>
+     </ol>
+    <li>
+     <a href="#materialization"><span class="secno">5</span> <span class="content">Materialization</span></a>
+     <ol class="toc">
+      <li><a href="#age-verification"><span class="secno">5.1</span> <span class="content">Age Verification</span></a>
+      <li><a href="#cargo-monitoring"><span class="secno">5.2</span> <span class="content">Cargo Monitoring</span></a>
+     </ol>
     <li><a href="#legal"><span class="secno">6</span> <span class="content">Legal Considerations</span></a>
     <li><a href="#namespaces"><span class="secno">7</span> <span class="content">Namespaces</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
@@ -2065,23 +2088,195 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   </nav>
   <main>
    <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introd­uction</span><a class="self-link" href="#introduction"></a></h2>
-   <p>TODO:</p>
+   <p><mark>TODO:&lt;\mark></mark></p>
    <h3 class="heading settled" data-level="1.1" id="terminology"><span class="secno">1.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
-   <p>TODO</p>
+   <p><mark>TODO:&lt;\mark></mark></p>
    <h2 class="heading settled" data-level="2" id="requirements"><span class="secno">2. </span><span class="content">Requirements</span><a class="self-link" href="#requirements"></a></h2>
-   <p>TODO: add requirements from paper as CQs</p>
+   <ul>
+    <li data-md>
+     <p><strong>Explicitness from senders</strong>: Senders must define clear usage control policies that specify how data may be processed, for what purpose, and under which conditions.</p>
+    <li data-md>
+     <p><strong>Specificity from recipients</strong>: Recipients must be able to articulate exactly what data they require for what purpose. This is related to data minimization and ensures a high signal-to-noise ratio, reducing unnecessary exposure for the sender.</p>
+    <li data-md>
+     <p><strong>Uniqueness of each exchange</strong>: Every transaction is context-dependent and shaped by highly specific policies.</p>
+    <li data-md>
+     <p><strong>Legal compliance</strong>: Exchanges must adhere to jurisdictional regulations such as the <a data-link-type="biblio" href="#biblio-gdpr" title="Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation)">[GDPR]</a> in Europe or the California Consumer Privacy Act (<a data-link-type="biblio" href="#biblio-ccpa" title="California Consumer Privacy Act">[CCPA]</a>).</p>
+    <li data-md>
+     <p><strong>Accountability</strong>: Transparency in both data verification and usage is essential. All parties must be able to audit the lifecycle of the data and demonstrate compliance when required.</p>
+   </ul>
    <h2 class="heading settled" data-level="3" id="model"><span class="secno">3. </span><span class="content">Model</span><a class="self-link" href="#model"></a></h2>
-   <p>TODO</p>
+   <p><mark>TODO:&lt;\mark></mark></p>
    <h2 class="heading settled" data-level="4" id="vocabulary"><span class="secno">4. </span><span class="content">Vocabulary</span><a class="self-link" href="#vocabulary"></a></h2>
-   <p>TODO</p>
+   <h3 class="heading settled" data-level="4.1" id="Classes"><span class="secno">4.1. </span><span class="content">Classes</span><a class="self-link" href="#Classes"></a></h3>
+   <h4 class="heading settled" data-level="4.1.1" id="TrustEnvelope"><span class="secno">4.1.1. </span><span class="content">Trust Envelope</span><a class="self-link" href="#TrustEnvelope"></a></h4>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th>IRI
+      <td><a href="https://w3id.org/trustenvelope#TrustEnvelope">te:TrustEnvelope</a>
+     <tr>
+      <th>Label
+      <td>Trust Envelope
+     <tr>
+      <th>Type
+      <td><a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>, <a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a>
+     <tr>
+      <th>Definition
+      <td>A Trust Envelope is a unique data document, timestamped and digitally signed by a sender, representing a singular and voluntary act of associating a data unit with context about this data unit’s purported history and intended destiny.
+   </table>
+   <h4 class="heading settled" data-level="4.1.2" id="DataProvenance"><span class="secno">4.1.2. </span><span class="content">Data Provenance</span><a class="self-link" href="#DataProvenance"></a></h4>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th>IRI
+      <td><a href="https://w3id.org/trustenvelope#DataProvenance">te:DataProvenance</a>
+     <tr>
+      <th>Label
+      <td>Data Provenance
+     <tr>
+      <th>Type
+      <td><a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>, <a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a>
+     <tr>
+      <th>Definition
+      <td>Contextual information that captures the origin and history of data, including its source entity, entity providing the data, and issuance time.
+   </table>
+   <h4 class="heading settled" data-level="4.1.3" id="PolicyProvenance"><span class="secno">4.1.3. </span><span class="content">Policy Provenance</span><a class="self-link" href="#PolicyProvenance"></a></h4>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th>IRI
+      <td><a href="https://w3id.org/trustenvelope#PolicyProvenance">te:PolicyProvenance</a>
+     <tr>
+      <th>Label
+      <td>Policy Provenance
+     <tr>
+      <th>Type
+      <td><a href="http://www.w3.org/2000/01/rdf-schema#Class">rdfs:Class</a>, <a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a>
+     <tr>
+      <th>Definition
+      <td>Contextual information that captures the origin and history of a policy, including entities that have usage rights over the data unit, entity that will receive the data unit, and issuance time.
+   </table>
+   <h3 class="heading settled" data-level="4.2" id="Properties"><span class="secno">4.2. </span><span class="content">Properties</span><a class="self-link" href="#Properties"></a></h3>
+   <h4 class="heading settled" data-level="4.2.1" id="Provenance"><span class="secno">4.2.1. </span><span class="content">Provenance</span><a class="self-link" href="#Provenance"></a></h4>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th>IRI
+      <td><a href="https://w3id.org/trustenvelope#provenance">te:provenance</a>
+     <tr>
+      <th>Label
+      <td>Provenance
+     <tr>
+      <th>Type
+      <td><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a>, <a href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+     <tr>
+      <th>Definition
+      <td>Denotes contextual information related to the origin and history of data units and policies.
+     <tr>
+      <th>Domain
+      <td><a href="https://w3id.org/trustenvelope#TrustEnvelope">te:TrustEnvelope</a>
+     <tr>
+      <th>Range
+      <td><a href="https://w3id.org/trustenvelope#DataProvenance">te:DataProvenance</a>, <a href="https://w3id.org/trustenvelope#PolicyProvenance">te:PolicyProvenance</a>
+   </table>
+   <h4 class="heading settled" data-level="4.2.2" id="Sender"><span class="secno">4.2.2. </span><span class="content">Sender</span><a class="self-link" href="#Sender"></a></h4>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th>IRI
+      <td><a href="https://w3id.org/trustenvelope#sender">te:sender</a>
+     <tr>
+      <th>Label
+      <td>Sender
+     <tr>
+      <th>Type
+      <td><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a>, <a href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+     <tr>
+      <th>Definition
+      <td>Entity that issues the trust envelope.
+     <tr>
+      <th>Domain
+      <td><a href="https://w3id.org/trustenvelope#DataProvenance">te:DataProvenance</a>
+     <tr>
+      <th>Range
+      <td><a href="http://www.w3.org/2001/XMLSchema#anyURI">xsd:anyURI</a>
+   </table>
+   <h4 class="heading settled" data-level="4.2.3" id="Recipient"><span class="secno">4.2.3. </span><span class="content">Recipient</span><a class="self-link" href="#Recipient"></a></h4>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th>IRI
+      <td><a href="https://w3id.org/trustenvelope#recipient">te:recipient</a>
+     <tr>
+      <th>Label
+      <td>
+     <tr>
+      <th>Type
+      <td><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a>, <a href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+     <tr>
+      <th>Definition
+      <td>Entity that receives the trust envelope.
+     <tr>
+      <th>Domain
+      <td><a href="https://w3id.org/trustenvelope#PolicyProvenance">te:PolicyProvenance</a>
+     <tr>
+      <th>Range
+      <td><a href="http://www.w3.org/2001/XMLSchema#anyURI">xsd:anyURI</a>
+   </table>
+   <h4 class="heading settled" data-level="4.2.4" id="RightsHolder"><span class="secno">4.2.4. </span><span class="content">Rights holder</span><a class="self-link" href="#RightsHolder"></a></h4>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th>IRI
+      <td><a href="https://w3id.org/trustenvelope#rightsHolder">te:rightsHolder</a>
+     <tr>
+      <th>Label
+      <td>Rights holder
+     <tr>
+      <th>Type
+      <td><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a>, <a href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+     <tr>
+      <th>Definition
+      <td>Entity claiming to have usage rights over the data unit.
+     <tr>
+      <th>Domain
+      <td><a href="https://w3id.org/trustenvelope#PolicyProvenance">te:PolicyProvenance</a>
+     <tr>
+      <th>Range
+      <td><a href="http://www.w3.org/2001/XMLSchema#anyURI">xsd:anyURI</a>
+   </table>
+   <h4 class="heading settled" data-level="4.2.5" id="Sign"><span class="secno">4.2.5. </span><span class="content">Sign</span><a class="self-link" href="#Sign"></a></h4>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th>IRI
+      <td><a href="https://w3id.org/trustenvelope#sign">te:sign</a>
+     <tr>
+      <th>Label
+      <td>Sign
+     <tr>
+      <th>Type
+      <td><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a>, <a href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+     <tr>
+      <th>Definition
+      <td>Denotes information about digital signatures.
+     <tr>
+      <th>Domain
+      <td><a href="https://w3id.org/trustenvelope#TrustEnvelope">te:TrustEnvelope</a>, <a href="https://w3id.org/trustenvelope#DataProvenance">te:DataProvenance</a>, <a href="https://w3id.org/trustenvelope#PolicyProvenance">te:PolicyProvenance</a>
+     <tr>
+      <th>Range
+      <td><a href="http://www.w3.org/2001/XMLSchema#anyURI">xsd:anyURI</a>
+   </table>
    <h2 class="heading settled" data-level="5" id="materialization"><span class="secno">5. </span><span class="content">Materialization</span><a class="self-link" href="#materialization"></a></h2>
-   <p>TODO:</p>
+   <p><mark>TODO:&lt;\mark></mark></p>
    <ul>
     <li data-md>
      <p>add worked out examples</p>
     <li data-md>
      <p>current approach on how to signatures + limitations</p>
    </ul>
+   <h3 class="heading settled" data-level="5.1" id="age-verification"><span class="secno">5.1. </span><span class="content">Age Verification</span><a class="self-link" href="#age-verification"></a></h3>
+   <h3 class="heading settled" data-level="5.2" id="cargo-monitoring"><span class="secno">5.2. </span><span class="content">Cargo Monitoring</span><a class="self-link" href="#cargo-monitoring"></a></h3>
    <h2 class="heading settled" data-level="6" id="legal"><span class="secno">6. </span><span class="content">Legal Considerations</span><a class="self-link" href="#legal"></a></h2>
    <p>The <a href="#model">Trust Envelope model</a> was developed to be regulation-agnostic,
 to be able to tackle legal requirements from different jurisdictions,
@@ -2258,6 +2453,8 @@ and possibly held as proof in judgments for the later case.</p>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-ccpa">[CCPA]
+   <dd><a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201720180AB375"><cite>California Consumer Privacy Act</cite></a>. URL: <a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201720180AB375">https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201720180AB375</a>
    <dt id="biblio-dga">[DGA]
    <dd><a href="http://data.europa.eu/eli/reg/2022/868/oj/eng"><cite>Regulation (EU) 2022/868 of the European Parliament and of the Council of 30 May 2022 on European data governance and amending Regulation (EU) 2018/1724 (Data Governance Act)</cite></a>. URL: <a href="http://data.europa.eu/eli/reg/2022/868/oj/eng">http://data.europa.eu/eli/reg/2022/868/oj/eng</a>
    <dt id="biblio-gdpr">[GDPR]

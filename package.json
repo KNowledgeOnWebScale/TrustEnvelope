@@ -1,0 +1,15 @@
+{
+  "name": "spec-tooling",
+  "version": "0.0.1",
+  "description": "Tooling to convert a vocabulary to bikeshed info",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "n3": "^1.26.0",
+    "rdf-dereference-store": "^1.4.0"
+  }
+}

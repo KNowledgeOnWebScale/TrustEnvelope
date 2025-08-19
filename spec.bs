@@ -6,7 +6,7 @@ Status: LD
 Editor: Wout Slabbinck, Ghent University - imec http://idlab.ugent.be/, wout.slabbinck@ugent.be
 Editor: Beatriz Esteves, Ghent University - imec http://idlab.ugent.be/, beatriz.esteves@ugent.be
 Editor: Ruben Verborgh, Ghent University - imec http://idlab.ugent.be/, ruben.verborgh@ugent.be
-Abstract: TODO
+Abstract: A Trust Envelope is a unique data document, timestamped and digitally signed by a sender, that represents a singular act of associating a data unit with context specific to an actual or proposed processing of the data unit by the recipient. 
 Markup Shorthands: markdown yes, css no
 URL: https://w3id.org/trustenvelope
 Previous Version: _ORCHESTRATOR_PREVIOUS_BUILD_FULL_LINK_
@@ -27,6 +27,10 @@ Repository: https://github.com/KNowledgeOnWebScale/TrustEnvelope
   "dga": {
     "href": "http://data.europa.eu/eli/reg/2022/868/oj/eng",
     "title": "Regulation (EU) 2022/868 of the European Parliament and of the Council of 30 May 2022 on European data governance and amending Regulation (EU) 2018/1724 (Data Governance Act)"
+  },
+  "ccpa": {
+    "href": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201720180AB375",
+    "title": "California Consumer Privacy Act"
   }
 }
 </pre>
@@ -34,33 +38,127 @@ Repository: https://github.com/KNowledgeOnWebScale/TrustEnvelope
 Introd­uction {#introduction}
 ============================
 
-TODO:
+<mark>TODO:<\mark>
 
 ## Terminology ## {#terminology}
 
-TODO
+<mark>TODO:<\mark>
 
 Requirements {#requirements}
 ============================
 
-TODO: add requirements from paper as CQs
+- **Explicitness from senders**: Senders must define clear usage control policies that specify how data may be processed, for what purpose, and under which conditions.
+- **Specificity from recipients**: Recipients must be able to articulate exactly what data they require for what purpose. This is related to data minimization and ensures a high signal-to-noise ratio, reducing unnecessary exposure for the sender.
+- **Uniqueness of each exchange**: Every transaction is context-dependent and shaped by highly specific policies.
+- **Legal compliance**: Exchanges must adhere to jurisdictional regulations such as the [[!GDPR]] in Europe or the California Consumer Privacy Act ([[!CCPA]]).
+- **Accountability**: Transparency in both data verification and usage is essential. All parties must be able to audit the lifecycle of the data and demonstrate compliance when required.
 
 Model {#model}
 ==============
 
-TODO
+<mark>TODO:<\mark>
 
 Vocabulary {#vocabulary}
 ========================
 
-TODO
+## Classes ## {#Classes}
+
+### Trust Envelope ### {#TrustEnvelope}
+
+<pre class=simpledef>
+IRI: [te:TrustEnvelope](https://w3id.org/trustenvelope#TrustEnvelope)
+Label: Trust Envelope
+Type: [rdfs:Class](http://www.w3.org/2000/01/rdf-schema#Class), [skos:Concept](http://www.w3.org/2004/02/skos/core#Concept)
+Definition: A Trust Envelope is a unique data document, timestamped and digitally signed by a sender, representing a singular and voluntary act of associating a data unit with context about this data unit's purported history and intended destiny.
+</pre>
+
+### Data Provenance ### {#DataProvenance}
+
+<pre class=simpledef>
+IRI: [te:DataProvenance](https://w3id.org/trustenvelope#DataProvenance)
+Label: Data Provenance
+Type: [rdfs:Class](http://www.w3.org/2000/01/rdf-schema#Class), [skos:Concept](http://www.w3.org/2004/02/skos/core#Concept)
+Definition: Contextual information that captures the origin and history of data, including its source entity, entity providing the data, and issuance time.
+</pre>
+
+### Policy Provenance ### {#PolicyProvenance}
+
+<pre class=simpledef>
+IRI: [te:PolicyProvenance](https://w3id.org/trustenvelope#PolicyProvenance)
+Label: Policy Provenance
+Type: [rdfs:Class](http://www.w3.org/2000/01/rdf-schema#Class), [skos:Concept](http://www.w3.org/2004/02/skos/core#Concept)
+Definition: Contextual information that captures the origin and history of a policy, including entities that have usage rights over the data unit, entity that will receive the data unit, and issuance time.
+</pre>
+
+## Properties ## {#Properties}
+
+### Provenance ### {#Provenance}
+
+<pre class=simpledef>
+IRI: [te:provenance](https://w3id.org/trustenvelope#provenance)
+Label: Provenance
+Type: [skos:Concept](http://www.w3.org/2004/02/skos/core#Concept), [rdfs:Property](http://www.w3.org/2000/01/rdf-schema#Property)
+Definition: Denotes contextual information related to the origin and history of data units and policies.
+Domain: [te:TrustEnvelope](https://w3id.org/trustenvelope#TrustEnvelope)
+Range: [te:DataProvenance](https://w3id.org/trustenvelope#DataProvenance), [te:PolicyProvenance](https://w3id.org/trustenvelope#PolicyProvenance)
+</pre>
+
+### Sender ### {#Sender}
+
+<pre class=simpledef>
+IRI: [te:sender](https://w3id.org/trustenvelope#sender)
+Label: Sender
+Type: [skos:Concept](http://www.w3.org/2004/02/skos/core#Concept), [rdfs:Property](http://www.w3.org/2000/01/rdf-schema#Property)
+Definition: Entity that issues the trust envelope.
+Domain: [te:DataProvenance](https://w3id.org/trustenvelope#DataProvenance)
+Range: [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI)
+</pre>
+
+### Recipient ### {#Recipient}
+
+<pre class=simpledef>
+IRI: [te:recipient](https://w3id.org/trustenvelope#recipient)
+Label: 
+Type: [skos:Concept](http://www.w3.org/2004/02/skos/core#Concept), [rdfs:Property](http://www.w3.org/2000/01/rdf-schema#Property)
+Definition: Entity that receives the trust envelope.
+Domain: [te:PolicyProvenance](https://w3id.org/trustenvelope#PolicyProvenance)
+Range: [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI)
+</pre>
+
+### Rights holder ### {#RightsHolder}
+
+<pre class=simpledef>
+IRI: [te:rightsHolder](https://w3id.org/trustenvelope#rightsHolder)
+Label: Rights holder
+Type: [skos:Concept](http://www.w3.org/2004/02/skos/core#Concept), [rdfs:Property](http://www.w3.org/2000/01/rdf-schema#Property)
+Definition: Entity claiming to have usage rights over the data unit.
+Domain: [te:PolicyProvenance](https://w3id.org/trustenvelope#PolicyProvenance)
+Range: [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI)
+</pre>
+
+### Sign ### {#Sign}
+
+<pre class=simpledef>
+IRI: [te:sign](https://w3id.org/trustenvelope#sign)
+Label: Sign
+Type: [skos:Concept](http://www.w3.org/2004/02/skos/core#Concept), [rdfs:Property](http://www.w3.org/2000/01/rdf-schema#Property)
+Definition: Denotes information about digital signatures.
+Domain: [te:TrustEnvelope](https://w3id.org/trustenvelope#TrustEnvelope), [te:DataProvenance](https://w3id.org/trustenvelope#DataProvenance), [te:PolicyProvenance](https://w3id.org/trustenvelope#PolicyProvenance)
+Range: [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI)
+</pre>
 
 Materialization {#materialization}
 ==================================
 
-TODO:
+<mark>TODO:<\mark>
 - add worked out examples
 - current approach on how to signatures + limitations
+
+## Age Verification ## {#age-verification}
+
+## Cargo Monitoring ## {#cargo-monitoring}
+
+
 
 Legal Considerations {#legal}
 =============================

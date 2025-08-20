@@ -44,8 +44,14 @@ Introd­uction {#introduction}
 The following terms are used to describe concepts in this specification. 
 
 <dl>
+  <dt><dfn>ODRL Policy</dfn></dt>
+  <dd>TODO</dd>
   <dt><dfn>Trust Envelope</dfn></dt>
-  <dd>a unique data document, timestamped and digitally signed by a sender, that represents a singular act of associating a data unit with context specific to an actual or proposed processing of the data unit by the recipient.</dd>
+  <dd>A unique data document, timestamped and digitally signed by a sender, that represents a singular act of associating a data unit with context specific to an actual or proposed processing of the data unit by the recipient.</dd>
+  <dt><dfn>Verifiable Credential</dfn></dt>
+  <dd>TODO</dd>
+  <dt><dfn>Verifiable Presentation</dfn></dt>
+  <dd>TODO</dd>
 </dl>
 
 Requirements {#requirements}
@@ -155,28 +161,31 @@ Range: [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI)
 Materialization {#materialization}
 ==================================
 
-<mark>TODO:</mark>
-- add worked out examples
-- current approach on how to signatures + limitations
-
 ## Age Verification ## {#age-verification}
 Alice wants to have alcoholic beverages delivered to her house in Belgium, 
 where the legal age to buy alcoholic beverages is 18. 
 She goes online to Alcoholic Beverages Corporations (ABC) and attempts to buy beer. 
 However, she is prohibited to make the purchase since she did not prove that she is over 18. 
 
-As such, she sends a [Trust Envelope](#trust-envelope-1) to ABC.
+As such, she sends a [Trust Envelope](#trustenvelope-1) to ABC.
 The **data unit** contains a proof ([represented by a VP](#data-unit-1)), issued by the government, that Alice is over 18 years old. 
 The envelope also encloses an [**ODRL policy**](#policy-1) permitting ABC to use the data unit solely for age verification purposes.
 
-<mark>TODO:</mark> singing comments
-The history, comprising
-the data and it provenance, and the destiny, comprising the policy and its provenance, are each
-individually signed. These two signed entities are then encapsulated within an overarching
-signature at the Trust Envelope level
+For this envelope, there are three [signatures](#signatures-1) made by Alice.<br>
+First, the provenance signature (`ex:signedDataProvenance1`) and policy provenance (`ex:signedPolicyProvenance1`) are made.
+For the provenance, this entails signing all triples related to the data (as shown by [`https://country.org/uuid1`](#data-unit-1)) AND all the triples of `ex:dataProvenance1` minus the `te:sign` triples (as this is the signature and can only be added after the signing).
+The policy signature strategy is the same, the signature entails all triples related to the policy ([`ex:policy1`](#policy-1)) AND all the triples of `ex:policyProvenance1` minus the `te:sign` triples.<br>
+Finally, a signature is made over the whole Trust Envelope, selecting all triples related to the Trust Envelope apart from `te:sign` triples.
 
-<mark>TODO:</mark> comments regarding policy being an agreement, meaning it is a contract and thus binding
-<div class="example" highlight="turtle" id="trust-envelope-1"> 
+Note: Right now, this selection principle leaves room for interpretation given the Open World assumption of RDF. 
+In current example, it is relatively clear which triples are meant, as all of them are explicitly shown.
+To create software, however, it is important to be explicit in the selecting of those triples. One potential solution for this purpose is using [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/).
+
+Note: A choice in this example is made to have an **ODRL Agreement** as policy.
+In practice, this implies that both the sender/assigner (Alice) and the recipient/assignee (ABC) have, in some form, signed the policy.
+As a result, it’s not a one-sided declaration but rather a mutual contract. Both parties acknowledge and are expected to honor the policy.
+
+<div class="example" highlight="turtle" id="trustenvelope-1"> 
 Trust Envelope issued by Alice to prove to ABC that her age is above 18
 ```turtle
 ex:envelope1 a te:TrustEnvelope ;
@@ -202,10 +211,43 @@ ex:policyProvenance1 a te:PolicyProvenance ;
 
 <div class="example" highlight="turtle" id="data-unit-1"> 
 A Verifiable Presentation containing proof that Alice her age is over 18.
-The proof is issued by the government of her country.
-<mark>TODO:</mark> create a VP with ID https://country.org/uuid1
-```turtle
-<https://country.org/uuid1> 
+The proof is a Verifiable Credential issued by the government of her country.
+```json-ld
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2"
+  ],
+  "type": [
+    "VerifiablePresentation"
+  ],
+  "id": "https://country.org/uuid1",
+  "holder": "https://alice.org",
+  "verifiableCredential": [
+    {
+      "id": "https://country.org/uuid1/credential",
+      "type": [
+        "VerifiableCredential"
+      ],
+      "issuer": "https://country.org/",
+      "validFrom": "2025-03-07T11:13:40.178987907Z",
+      "credentialSubject": {
+        "id": "https://alice.org",
+        "age": {
+          "type": "AgeProof",
+          "name": "Age is over 18"
+        }
+      },
+      "validUntil": "2026-03-07T11:13:40.179049118Z",
+      "proof": {
+        "type": "DataIntegrityProof",
+        "verificationMethod": "...",
+        "cryptosuite": "bbs-2023",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "..."
+      }
+    }
+  ]
+}
 ```
 </div>
 
@@ -231,9 +273,9 @@ ex:constraint1 a odrl:Constraint ;
 </div>
 
 <div class="example" highlight="turtle" id="signatures-1"> 
-The signatures for Alice her [Trust Envelope](#trust-envelope-1).
-<mark>TODO:</mark> Elaborate the signing structure 
-<mark>TODO:</mark> Elaborate the assupmtions and limitations and check with Ruben D
+The signatures for Alice her [Trust Envelope](#trustenvelope-1).
+
+The **Trust Envelope signature** entails all triples related to the Trust Envelope ([`ex:envelope1`](#trustenvelope-1))  (the data, the policy, and all the provenance and corresponding signatures as shown below) (apart from the signature itself)
 ```turtle
 ex:signedEnvelope1 a sign:Signature ;
   sign:value "...";
@@ -241,6 +283,7 @@ ex:signedEnvelope1 a sign:Signature ;
   sign:issuer <https://alice.org>.
 ```
 
+The **provenance signature** entails all triples starting from provenance ([`ex:dataProvenance1`](#trustenvelope-1)) (apart from the signature itself) AND all triples related to the data ([`https://country.org/uuid1`](#data-unit-1)).
 ```turtle
 ex:signedDataProvenance1 a sign:Signature ;
   sign:value "...";
@@ -248,6 +291,7 @@ ex:signedDataProvenance1 a sign:Signature ;
   sign:issuer <https://alice.org>.
 ```
 
+The **policy signature** entails all triples starting from policy provenance ([`ex:policyProvenance1`](#trustenvelope-1)) (apart from the signature itself) AND all triples related to the data ([`ex:policy1`](#policy-1)).
 ```turtle
 ex:signedPolicyProvenance1 a sign:Signature ;
   sign:value "...";
@@ -255,8 +299,25 @@ ex:signedPolicyProvenance1 a sign:Signature ;
   sign:issuer <https://alice.org>.
 ```
 </div>
-Note: <mark>TODO:</mark> refer to [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/) as a clean way to do this signing properly
+
+Note: The signatures [above](#signatures-1) its structure is influenced by [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/). Though currently, proper selection trough asserting a set of triples is not performed properlyW.
+
 ## Cargo Monitoring ## {#cargo-monitoring}
+
+Beverage Company (BC) contracts Boxport to transport goods via inland waterways, 
+at all times BC wants the location of the cargo in real-time to estimate the delivery time.
+Waterway authorities monitor vessel movements and can verify location data.
+This includes of course Bluewave, the vessel employed by Boxport to transport BC its cargo.
+
+To monitor its fleet, Boxport requests access to this data.
+The authority responds by issuing a Trust Envelope that encapsulates Bluewave's precise location at time *t*
+and explicitly grants Boxport permission to use and distribute the data.
+
+When BC requests the location of its cargo from Boxport,
+the latter responds with a new Trust Envelope .
+This envelope materializes the previously received 
+Trust Envelope from the waterway authority into derived cargo spatio-temporal data, 
+using it as the basis for a new, context-specific data unit.
 
 <mark>TODO:</mark> (analogous as [age verification use case](#age-verification))
 

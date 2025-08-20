@@ -38,11 +38,15 @@ Repository: https://github.com/KNowledgeOnWebScale/TrustEnvelope
 Introd­uction {#introduction}
 ============================
 
-<mark>TODO:<\mark>
+<mark>TODO:</mark>
 
 ## Terminology ## {#terminology}
+The following terms are used to describe concepts in this specification. 
 
-<mark>TODO:<\mark>
+<dl>
+  <dt><dfn>Trust Envelope</dfn></dt>
+  <dd>a unique data document, timestamped and digitally signed by a sender, that represents a singular act of associating a data unit with context specific to an actual or proposed processing of the data unit by the recipient.</dd>
+</dl>
 
 Requirements {#requirements}
 ============================
@@ -56,7 +60,8 @@ Requirements {#requirements}
 Model {#model}
 ==============
 
-<mark>TODO:<\mark>
+
+<mark>TODO:</mark> Add figures here
 
 Vocabulary {#vocabulary}
 ========================
@@ -150,15 +155,110 @@ Range: [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI)
 Materialization {#materialization}
 ==================================
 
-<mark>TODO:<\mark>
+<mark>TODO:</mark>
 - add worked out examples
 - current approach on how to signatures + limitations
 
 ## Age Verification ## {#age-verification}
+Alice wants to have alcoholic beverages delivered to her house in Belgium, 
+where the legal age to buy alcoholic beverages is 18. 
+She goes online to Alcoholic Beverages Corporations (ABC) and attempts to buy beer. 
+However, she is prohibited to make the purchase since she did not prove that she is over 18. 
 
+As such, she sends a [Trust Envelope](#trust-envelope-1) to ABC.
+The **data unit** contains a proof ([represented by a VP](#data-unit-1)), issued by the government, that Alice is over 18 years old. 
+The envelope also encloses an [**ODRL policy**](#policy-1) permitting ABC to use the data unit solely for age verification purposes.
+
+<mark>TODO:</mark> singing comments
+The history, comprising
+the data and it provenance, and the destiny, comprising the policy and its provenance, are each
+individually signed. These two signed entities are then encapsulated within an overarching
+signature at the Trust Envelope level
+
+<mark>TODO:</mark> comments regarding policy being an agreement, meaning it is a contract and thus binding
+<div class="example" highlight="turtle" id="trust-envelope-1"> 
+Trust Envelope issued by Alice to prove to ABC that her age is above 18
+```turtle
+ex:envelope1 a te:TrustEnvelope ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    dpv:hasData <https://country.org/uuid1> ; 
+    odrl:hasPolicy ex:policy1 ;
+    te:provenance ex:dataProvenance1, ex:policyProvenance1 ;
+    te:sign ex:signedEnvelope1 .
+
+ex:dataProvenance1 a te:DataProvenance ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    te:sender <https://alice.org> ; 
+    dpv:hasDataSubject <https://alice.org> ;
+    te:sign ex:signedDataProvenance1 .
+
+ex:policyProvenance1 a te:PolicyProvenance ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    te:recipient <https://alcoholic-beverages.com> ;
+    te:rightsHolder <https://alice.org> ; 
+    te:sign ex:signedPolicyProvenance1 .
+```
+</div>
+
+<div class="example" highlight="turtle" id="data-unit-1"> 
+A Verifiable Presentation containing proof that Alice her age is over 18.
+The proof is issued by the government of her country.
+<mark>TODO:</mark> create a VP with ID https://country.org/uuid1
+```turtle
+<https://country.org/uuid1> 
+```
+</div>
+
+<div class="example" highlight="turtle" id="policy-1"> 
+An ODRL policy with a permission rule that states that only Alcoholic Beverages Corporations can use the [data](#data-unit-1) under a purpose constraint.
+```turtle
+ex:policy1 a odrl:Agreement ;
+  odrl:uid ex:policy1 ;
+  odrl:permission ex:rule1 .
+
+ex:rule1 a odrl:Permission ;
+  odrl:assigner <https://alice.org> ;
+  odrl:assignee <https://alcoholic-beverages.com> ;
+  odrl:action odrl:read ;
+  odrl:target ex:x ;
+  odrl:constraint ex:constaint1 .
+
+ex:constraint1 a odrl:Constraint ;
+  odrl:leftOperand odrl:purpose ;
+  odrl:operator odrl:eq ;
+  odrl:rightOperand "Age Verification" .
+```
+</div>
+
+<div class="example" highlight="turtle" id="signatures-1"> 
+The signatures for Alice her [Trust Envelope](#trust-envelope-1).
+<mark>TODO:</mark> Elaborate the signing structure 
+<mark>TODO:</mark> Elaborate the assupmtions and limitations and check with Ruben D
+```turtle
+ex:signedEnvelope1 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:envelope1 ;
+  sign:issuer <https://alice.org>.
+```
+
+```turtle
+ex:signedDataProvenance1 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:dataProvenance1 ;
+  sign:issuer <https://alice.org>.
+```
+
+```turtle
+ex:signedPolicyProvenance1 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:policyProvenance1 ;
+  sign:issuer <https://alice.org>.
+```
+</div>
+Note: <mark>TODO:</mark> refer to [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/) as a clean way to do this signing properly
 ## Cargo Monitoring ## {#cargo-monitoring}
 
-
+<mark>TODO:</mark> (analogous as [age verification use case](#age-verification))
 
 Legal Considerations {#legal}
 =============================
@@ -191,8 +291,10 @@ Namespaces {#namespaces}
 Commonly used namespace prefixes used in this specification:
 ```turtle
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dpv:     <http://www.w3.org/ns/dpv#>.
+@prefix ex:      <http://example.org/>.
 @prefix odrl:    <http://www.w3.org/ns/odrl/2/>.
-@prefix te:      <https://w3id.org/trustenvelope#>
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix te:      <https://w3id.org/trustenvelope#>.
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 ```

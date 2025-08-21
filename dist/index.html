@@ -2138,7 +2138,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://knows.idlab.ugent.be/"> <img alt="KNoWS" height="48" src="logo.png"> </a></p>
    <h1 class="p-name no-ref" id="title">Trust Envelope specification</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Living Document, <time class="dt-updated" datetime="2025-08-20">20 August 2025</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Living Document, <time class="dt-updated" datetime="2025-08-21">21 August 2025</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2197,7 +2197,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     <li>
      <a href="#materialization"><span class="secno">5</span> <span class="content">Materialization</span></a>
      <ol class="toc">
-      <li><a href="#age-verification"><span class="secno">5.1</span> <span class="content">Age Verification</span></a>
+      <li><a href="#age-verification"><span class="secno">5.1</span> <span class="content">Purchase of age-restricted goods</span></a>
       <li><a href="#cargo-monitoring"><span class="secno">5.2</span> <span class="content">Cargo Monitoring</span></a>
      </ol>
     <li><a href="#legal"><span class="secno">6</span> <span class="content">Legal Considerations</span></a>
@@ -2217,7 +2217,12 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   </nav>
   <main>
    <h2 class="heading settled" data-level="1" id="introduction"><span class="secno">1. </span><span class="content">Introd­uction</span><a class="self-link" href="#introduction"></a></h2>
-   <p><mark>TODO:</mark></p>
+   <p>The physical world has finite number of carriers.
+Let’s not replicate that! the digital world doesn’t have that constraint.
+...</p>
+   <p>We introduce in the specification here Trust Envelopes, which is a unique carrier every time, which adds unique value every time.</p>
+   <p><mark>TODO:</mark> elaborate and make clear the importance of Trust Envelopes as technological solution for trust</p>
+   <p><mark>TODO:</mark> add navigation?</p>
    <h3 class="heading settled" data-level="1.1" id="terminology"><span class="secno">1.1. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h3>
     The following terms are used to describe concepts in this specification. 
    <dl>
@@ -2407,13 +2412,15 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <td><a href="http://www.w3.org/2001/XMLSchema#anyURI">xsd:anyURI</a>
    </table>
    <h2 class="heading settled" data-level="5" id="materialization"><span class="secno">5. </span><span class="content">Materialization</span><a class="self-link" href="#materialization"></a></h2>
-   <h3 class="heading settled" data-level="5.1" id="age-verification"><span class="secno">5.1. </span><span class="content">Age Verification</span><a class="self-link" href="#age-verification"></a></h3>
+   <h3 class="heading settled" data-level="5.1" id="age-verification"><span class="secno">5.1. </span><span class="content">Purchase of age-restricted goods</span><a class="self-link" href="#age-verification"></a></h3>
     Alice wants to have alcoholic beverages delivered to her house in Belgium, 
 where the legal age to buy alcoholic beverages is 18. 
 She goes online to Alcoholic Beverages Corporations (ABC) and attempts to buy beer. 
-However, she is prohibited to make the purchase since she did not prove that she is over 18. 
+The store requires sufficient evidence to demonstrate that each purchase complies to Belgian law. 
+Therefore, ABC restricts purchases for alcoholic beverages to those who provide sufficient evidence, which is being over the age of 18. 
+There are multiple carriers of that evidence: a national ID card, an international passport, a driver’s license, ... . (note that the three provided are all government issued documents) 
    <p>As such, she sends a <a href="#trustenvelope-1">Trust Envelope</a> to ABC.
-The <strong>data unit</strong> contains a proof (<a href="#data-unit-1">represented by a VP</a>), issued by the government, that Alice is over 18 years old. 
+It is a technological solution that carries this evidence in a uniquely crafted envelope, tailored specifically for the transaction between Alice and ABC.<br> The <strong>data unit</strong> contains a proof (<a href="#data-unit-1">represented by a VP</a>), issued by the government, that Alice is over 18 years old. 
 The envelope also encloses an <a href="#policy-1"><strong>ODRL policy</strong></a> permitting ABC to use the data unit solely for age verification purposes.</p>
    <p>For this envelope, there are three <a href="#signatures-1">signatures</a> made by Alice.<br> First, the provenance signature (<code>ex:signedDataProvenance1</code>) and policy provenance (<code>ex:signedPolicyProvenance1</code>) are made.
 For the provenance, this entails signing all triples related to the data (as shown by <a href="#data-unit-1"><code>https://country.org/uuid1</code></a>) AND all the triples of <code>ex:dataProvenance1</code> minus the <code>te:sign</code> triples (as this is the signature and can only be added after the signing).
@@ -2528,8 +2535,9 @@ The proof is a Verifiable Credential issued by the government of her country.
    </div>
    <p class="note" role="note"><span class="marker">Note:</span> The signatures <a href="#signatures-1">above</a> its structure is influenced by <a href="https://knowledgeonwebscale.github.io/rdf-context-associations/">RDF context associations</a>. Though currently, proper selection trough asserting a set of triples is not performed properlyW.</p>
    <h3 class="heading settled" data-level="5.2" id="cargo-monitoring"><span class="secno">5.2. </span><span class="content">Cargo Monitoring</span><a class="self-link" href="#cargo-monitoring"></a></h3>
-   <p>Beverage Company (BC) contracts Boxport to transport goods via inland waterways,
-at all times BC wants the location of the cargo in real-time to estimate the delivery time.
+   <p>In logistics, real-time cargo tracking is essential for optimizing planning and estimating time of arrival.
+In this use case, we have Beverage Company (BC) that contracts Boxport to transport goods via inland waterways. 
+At all times BC wants the location of the cargo in real-time to estimate the delivery time.
 Waterway authorities monitor vessel movements and can verify location data.
 This includes of course Bluewave, the vessel employed by Boxport to transport BC its cargo.</p>
    <p>To monitor its fleet, Boxport requests access to this data.
@@ -2539,6 +2547,28 @@ the latter responds with a new Trust Envelope .
 This envelope materializes the previously received 
 Trust Envelope from the waterway authority into derived cargo spatio-temporal data, 
 using it as the basis for a new, context-specific data unit.</p>
+   <div class="example" id="trustenvelope-2">
+    <a class="self-link" href="#trustenvelope-2"></a> Trust Envelope issued by the waterway authority to allow Boxport the tracking of the real-time location of a given vessel. 
+<pre class="language-turtle highlight"><c- nn>ex</c-><c- p>:</c-><c- f>envelope1</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>TrustEnvelope</c-> <c- p>;</c->
+    <c- nn>dcterms</c-><c- p>:</c-><c- f>issued</c-> <c- s>"2024-02-12T11:20:10.999Z"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
+    <c- nn>dpv</c-><c- p>:</c-><c- f>hasData</c-> <c- g>&lt;https://country.org/uuid1></c-> <c- p>;</c-> 
+    <c- nn>odrl</c-><c- p>:</c-><c- f>hasPolicy</c-> <c- nn>ex</c-><c- p>:</c-><c- f>policy1</c-> <c- p>;</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>provenance</c-> <c- nn>ex</c-><c- p>:</c-><c- f>dataProvenance1</c-><c- p>,</c-> <c- nn>ex</c-><c- p>:</c-><c- f>policyProvenance1</c-> <c- p>;</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedEnvelope1</c-> <c- p>.</c->
+
+<c- nn>ex</c-><c- p>:</c-><c- f>dataProvenance1</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>DataProvenance</c-> <c- p>;</c->
+    <c- nn>dcterms</c-><c- p>:</c-><c- f>issued</c-> <c- s>"2024-02-12T11:20:10.999Z"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>sender</c-> <c- g>&lt;https://alice.org></c-> <c- p>;</c-> 
+    <c- nn>dpv</c-><c- p>:</c-><c- f>hasDataSubject</c-> <c- g>&lt;https://alice.org></c-> <c- p>;</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedDataProvenance1</c-> <c- p>.</c->
+
+<c- nn>ex</c-><c- p>:</c-><c- f>policyProvenance1</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>PolicyProvenance</c-> <c- p>;</c->
+    <c- nn>dcterms</c-><c- p>:</c-><c- f>issued</c-> <c- s>"2024-02-12T11:20:10.999Z"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>recipient</c-> <c- g>&lt;https://alcoholic-beverages.com></c-> <c- p>;</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>rightsHolder</c-> <c- g>&lt;https://alice.org></c-> <c- p>;</c-> 
+    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedPolicyProvenance1</c-> <c- p>.</c->
+</pre>
+   </div>
    <p><mark>TODO:</mark> (analogous as <a href="#age-verification">age verification use case</a>)</p>
    <h2 class="heading settled" data-level="6" id="legal"><span class="secno">6. </span><span class="content">Legal Considerations</span><a class="self-link" href="#legal"></a></h2>
    <p>The <a href="#model">Trust Envelope model</a> was developed to be regulation-agnostic,

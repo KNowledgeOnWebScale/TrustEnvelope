@@ -1,7 +1,8 @@
 # Cargo Monitoring Use Case
 
-Beverage Company (BC) contracts Boxport to transport goods via inland waterways, 
-at all times BC wants the location of the cargo in real-time to estimate the delivery time.
+In logistics, real-time cargo tracking is essential for optimizing planning and estimating time of arrival.
+In this use case, we have Beverage Company (BC) that contracts Boxport to transport goods via inland waterways.
+At all times BC wants the location of the cargo in real-time to estimate the delivery time.
 Waterway authorities monitor vessel movements and can verify location data.
 This includes of course Bluewave, the vessel employed by Boxport to transport BC its cargo.
 

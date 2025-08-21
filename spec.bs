@@ -38,7 +38,16 @@ Repository: https://github.com/KNowledgeOnWebScale/TrustEnvelope
 Introd­uction {#introduction}
 ============================
 
-<mark>TODO:</mark>
+The physical world has finite number of carriers.
+Let's not replicate that! the digital world doesn't have that constraint.
+...
+
+We introduce in the specification here Trust Envelopes, which is a unique carrier every time, which adds unique value every time.
+
+
+<mark>TODO:</mark> elaborate and make clear the importance of Trust Envelopes as technological solution for trust
+
+<mark>TODO:</mark> add navigation?
 
 ## Terminology ## {#terminology}
 The following terms are used to describe concepts in this specification. 
@@ -161,13 +170,16 @@ Range: [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI)
 Materialization {#materialization}
 ==================================
 
-## Age Verification ## {#age-verification}
+## Purchase of age-restricted goods ## {#age-verification}
 Alice wants to have alcoholic beverages delivered to her house in Belgium, 
 where the legal age to buy alcoholic beverages is 18. 
 She goes online to Alcoholic Beverages Corporations (ABC) and attempts to buy beer. 
-However, she is prohibited to make the purchase since she did not prove that she is over 18. 
+The store requires sufficient evidence to demonstrate that each purchase complies to Belgian law. 
+Therefore, ABC restricts purchases for alcoholic beverages to those who provide sufficient evidence, which is being over the age of 18. 
+There are multiple carriers of that evidence: a national ID card, an international passport, a driver's license, ... . (note that the three provided are all government issued documents) 
 
-As such, she sends a [Trust Envelope](#trustenvelope-1) to ABC.
+As such, she sends a [Trust Envelope](#trustenvelope-1) to ABC. 
+It is a technological solution that carries this evidence in a uniquely crafted envelope, tailored specifically for the transaction between Alice and ABC.<br>
 The **data unit** contains a proof ([represented by a VP](#data-unit-1)), issued by the government, that Alice is over 18 years old. 
 The envelope also encloses an [**ODRL policy**](#policy-1) permitting ABC to use the data unit solely for age verification purposes.
 
@@ -261,8 +273,8 @@ ex:policy1 a odrl:Agreement ;
 ex:rule1 a odrl:Permission ;
   odrl:assigner <https://alice.org> ;
   odrl:assignee <https://alcoholic-beverages.com> ;
-  odrl:action odrl:read ;
-  odrl:target ex:x ;
+  odrl:action odrl:use ;
+  odrl:target <https://country.org/uuid1> ;
   odrl:constraint ex:constaint1 .
 
 ex:constraint1 a odrl:Constraint ;
@@ -300,12 +312,13 @@ ex:signedPolicyProvenance1 a sign:Signature ;
 ```
 </div>
 
-Note: The signatures [above](#signatures-1) its structure is influenced by [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/). Though currently, proper selection trough asserting a set of triples is not performed properlyW.
+Note: The signatures [above](#signatures-1) its structure is influenced by [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/). Though currently, proper selection trough asserting a set of triples is not performed properly.
 
 ## Cargo Monitoring ## {#cargo-monitoring}
 
-Beverage Company (BC) contracts Boxport to transport goods via inland waterways, 
-at all times BC wants the location of the cargo in real-time to estimate the delivery time.
+In logistics, real-time cargo tracking is essential for optimizing planning and estimating time of arrival.
+In this use case, we have Beverage Company (BC) that contracts Boxport to transport goods via inland waterways. 
+At all times BC wants the location of the cargo in real-time to estimate the delivery time.
 Waterway authorities monitor vessel movements and can verify location data.
 This includes of course Bluewave, the vessel employed by Boxport to transport BC its cargo.
 
@@ -319,7 +332,89 @@ This envelope materializes the previously received
 Trust Envelope from the waterway authority into derived cargo spatio-temporal data, 
 using it as the basis for a new, context-specific data unit.
 
-<mark>TODO:</mark> (analogous as [age verification use case](#age-verification))
+<div class="example" highlight="turtle" id="trustenvelope-2"> 
+Trust Envelope issued by the waterway authority to allow Boxport the tracking of the real-time location of a given vessel.
+```turtle
+ex:envelope2 a te:TrustEnvelope ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    dpv:hasData ex:AIS-measurement ;  
+    odrl:hasPolicy ex:policy2 ;
+    te:provenance ex:dataProvenance2, ex:policyProvenance2 ;
+    te:sign ex:signedEnvelope2 .
+
+ex:dataProvenance2 a te:DataProvenance ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    te:sender <https://waterway.org> ; 
+    eu-dga:hasDataHolder <https://boxport.com> ; 
+    te:sign ex:signedDataProvenance2 .
+
+ex:policyProvenance2 a te:PolicyProvenance ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    te:rightsHolder <https://crew.boxport.com>, <https://waterway.org> ; 
+    te:recipient <https://boxport.com> ; 
+    te:sign ex:signedPolicyProvenance2 .
+```
+</div>
+
+<div class="example" highlight="turtle" id="data-unit-2"> 
+The spatioTemporal information from Bluewave, represented through a [SSN/SOSA](https://www.w3.org/TR/vocab-ssn/) measurement.
+This information is generally retrieved by sensors capturing [Automatic Identification System (AIS)](https://en.wikipedia.org/wiki/Automatic_identification_system) signals, which vessels are obliged to transmit.
+
+```ttl
+<ex:AIS-measurement> a sosa:Observation ;
+  sosa:resultTime "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+  sosa:hasSimpleResult "POINT(4.37547 51.24607)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+```
+</div>
+
+Note: The full SSN/SOSA deployment description from the waterway to sense AIS signals is omitted for brevity.
+
+<div class="example" highlight="turtle" id="policy-2"> 
+An ODRL policy with a permission rule that states that Boxport can use and distribute the [data](#data-unit-2).
+```turtle
+ex:policy2 a odrl:Agreement ;
+  odrl:uid ex:policy2 ;
+  odrl:permission ex:rule2 .
+
+ex:rule2 a odrl:Permission ;
+  odrl:assigner <https://waterway.org> ;
+  odrl:assignee <https://boxport.com> ;
+  odrl:action odrl:use, odrl:distribute ;
+  odrl:target ex:AIS-measurement .
+```
+</div>
+
+<div class="example" highlight="turtle" id="signatures-2"> 
+The signatures for the waterway authority [Trust Envelope](#trustenvelope-2) of a particular AIS measurement.
+
+The **Trust Envelope signature** entails all triples related to the Trust Envelope ([`ex:envelope2`](#trustenvelope-2))  (the data, the policy, and all the provenance and corresponding signatures as shown below) (apart from the signature itself)
+```turtle
+ex:signedEnvelope2 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:envelope2 ;
+  sign:issuer <https://waterway.org>.
+```
+
+The **provenance signature** entails all triples starting from provenance ([`ex:dataProvenance2`](#trustenvelope-2)) (apart from the signature itself) AND all triples related to the data ([`https://country.org/uuid2`](#data-unit-2)).
+```turtle
+ex:signedDataProvenance2 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:dataProvenance2 ;
+  sign:issuer <https://waterway.org>.
+```
+
+The **policy signature** entails all triples starting from policy provenance ([`ex:policyProvenance2`](#trustenvelope-2)) (apart from the signature itself) AND all triples related to the data ([`ex:policy2`](#policy-2)).
+```turtle
+ex:signedPolicyProvenance1 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:policyProvenance1 ;
+  sign:issuer <https://waterway.org>.
+```
+</div>
+
+Note: The signatures [above](#signatures-2) its structure is influenced by [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/). Though currently, proper selection trough asserting a set of triples is not performed properly.
+
+
 
 Legal Considerations {#legal}
 =============================
@@ -351,11 +446,13 @@ Namespaces {#namespaces}
 
 Commonly used namespace prefixes used in this specification:
 ```turtle
-@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
 @prefix dpv:     <http://www.w3.org/ns/dpv#>.
 @prefix ex:      <http://example.org/>.
 @prefix odrl:    <http://www.w3.org/ns/odrl/2/>.
-@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix sosa:    <http://www.w3.org/ns/sosa/>.
+@prefix ssn:     <http://www.w3.org/ns/ssn/>.
 @prefix te:      <https://w3id.org/trustenvelope#>.
-@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#>.
 ```

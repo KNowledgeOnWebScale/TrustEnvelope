@@ -2502,8 +2502,8 @@ The proof is a Verifiable Credential issued by the government of her country.
 <c- nn>ex</c-><c- p>:</c-><c- f>rule1</c-> <c- b>a</c-> <c- nn>odrl</c-><c- p>:</c-><c- f>Permission</c-> <c- p>;</c->
   <c- nn>odrl</c-><c- p>:</c-><c- f>assigner</c-> <c- g>&lt;https://alice.org></c-> <c- p>;</c->
   <c- nn>odrl</c-><c- p>:</c-><c- f>assignee</c-> <c- g>&lt;https://alcoholic-beverages.com></c-> <c- p>;</c->
-  <c- nn>odrl</c-><c- p>:</c-><c- f>action</c-> <c- nn>odrl</c-><c- p>:</c-><c- f>read</c-> <c- p>;</c->
-  <c- nn>odrl</c-><c- p>:</c-><c- f>target</c-> <c- nn>ex</c-><c- p>:</c-><c- f>x</c-> <c- p>;</c->
+  <c- nn>odrl</c-><c- p>:</c-><c- f>action</c-> <c- nn>odrl</c-><c- p>:</c-><c- f>use</c-> <c- p>;</c->
+  <c- nn>odrl</c-><c- p>:</c-><c- f>target</c-> <c- g>&lt;https://country.org/uuid1></c-> <c- p>;</c->
   <c- nn>odrl</c-><c- p>:</c-><c- f>constraint</c-> <c- nn>ex</c-><c- p>:</c-><c- f>constaint1</c-> <c- p>.</c->
 
 <c- nn>ex</c-><c- p>:</c-><c- f>constraint1</c-> <c- b>a</c-> <c- nn>odrl</c-><c- p>:</c-><c- f>Constraint</c-> <c- p>;</c->
@@ -2533,7 +2533,7 @@ The proof is a Verifiable Credential issued by the government of her country.
   <c- nn>sign</c-><c- p>:</c-><c- f>issuer</c-> <c- g>&lt;https://alice.org></c-><c- p>.</c->
 </pre>
    </div>
-   <p class="note" role="note"><span class="marker">Note:</span> The signatures <a href="#signatures-1">above</a> its structure is influenced by <a href="https://knowledgeonwebscale.github.io/rdf-context-associations/">RDF context associations</a>. Though currently, proper selection trough asserting a set of triples is not performed properlyW.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> The signatures <a href="#signatures-1">above</a> its structure is influenced by <a href="https://knowledgeonwebscale.github.io/rdf-context-associations/">RDF context associations</a>. Though currently, proper selection trough asserting a set of triples is not performed properly.</p>
    <h3 class="heading settled" data-level="5.2" id="cargo-monitoring"><span class="secno">5.2. </span><span class="content">Cargo Monitoring</span><a class="self-link" href="#cargo-monitoring"></a></h3>
    <p>In logistics, real-time cargo tracking is essential for optimizing planning and estimating time of arrival.
 In this use case, we have Beverage Company (BC) that contracts Boxport to transport goods via inland waterways. 
@@ -2549,27 +2549,70 @@ Trust Envelope from the waterway authority into derived cargo spatio-temporal da
 using it as the basis for a new, context-specific data unit.</p>
    <div class="example" id="trustenvelope-2">
     <a class="self-link" href="#trustenvelope-2"></a> Trust Envelope issued by the waterway authority to allow Boxport the tracking of the real-time location of a given vessel. 
-<pre class="language-turtle highlight"><c- nn>ex</c-><c- p>:</c-><c- f>envelope1</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>TrustEnvelope</c-> <c- p>;</c->
+<pre class="language-turtle highlight"><c- nn>ex</c-><c- p>:</c-><c- f>envelope2</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>TrustEnvelope</c-> <c- p>;</c->
     <c- nn>dcterms</c-><c- p>:</c-><c- f>issued</c-> <c- s>"2024-02-12T11:20:10.999Z"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
-    <c- nn>dpv</c-><c- p>:</c-><c- f>hasData</c-> <c- g>&lt;https://country.org/uuid1></c-> <c- p>;</c-> 
-    <c- nn>odrl</c-><c- p>:</c-><c- f>hasPolicy</c-> <c- nn>ex</c-><c- p>:</c-><c- f>policy1</c-> <c- p>;</c->
-    <c- nn>te</c-><c- p>:</c-><c- f>provenance</c-> <c- nn>ex</c-><c- p>:</c-><c- f>dataProvenance1</c-><c- p>,</c-> <c- nn>ex</c-><c- p>:</c-><c- f>policyProvenance1</c-> <c- p>;</c->
-    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedEnvelope1</c-> <c- p>.</c->
+    <c- nn>dpv</c-><c- p>:</c-><c- f>hasData</c-> <c- nn>ex</c-><c- p>:</c-><c- f>AIS-measurement</c-> <c- p>;</c->  
+    <c- nn>odrl</c-><c- p>:</c-><c- f>hasPolicy</c-> <c- nn>ex</c-><c- p>:</c-><c- f>policy2</c-> <c- p>;</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>provenance</c-> <c- nn>ex</c-><c- p>:</c-><c- f>dataProvenance2</c-><c- p>,</c-> <c- nn>ex</c-><c- p>:</c-><c- f>policyProvenance2</c-> <c- p>;</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedEnvelope2</c-> <c- p>.</c->
 
-<c- nn>ex</c-><c- p>:</c-><c- f>dataProvenance1</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>DataProvenance</c-> <c- p>;</c->
+<c- nn>ex</c-><c- p>:</c-><c- f>dataProvenance2</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>DataProvenance</c-> <c- p>;</c->
     <c- nn>dcterms</c-><c- p>:</c-><c- f>issued</c-> <c- s>"2024-02-12T11:20:10.999Z"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
-    <c- nn>te</c-><c- p>:</c-><c- f>sender</c-> <c- g>&lt;https://alice.org></c-> <c- p>;</c-> 
-    <c- nn>dpv</c-><c- p>:</c-><c- f>hasDataSubject</c-> <c- g>&lt;https://alice.org></c-> <c- p>;</c->
-    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedDataProvenance1</c-> <c- p>.</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>sender</c-> <c- g>&lt;https://waterway.org></c-> <c- p>;</c-> 
+    <c- nn>eu-dga</c-><c- p>:</c-><c- f>hasDataHolder</c-> <c- g>&lt;https://boxport.com></c-> <c- p>;</c-> 
+    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedDataProvenance2</c-> <c- p>.</c->
 
-<c- nn>ex</c-><c- p>:</c-><c- f>policyProvenance1</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>PolicyProvenance</c-> <c- p>;</c->
+<c- nn>ex</c-><c- p>:</c-><c- f>policyProvenance2</c-> <c- b>a</c-> <c- nn>te</c-><c- p>:</c-><c- f>PolicyProvenance</c-> <c- p>;</c->
     <c- nn>dcterms</c-><c- p>:</c-><c- f>issued</c-> <c- s>"2024-02-12T11:20:10.999Z"</c-><c- p>^^</c-><c- nn>xsd</c-><c- p>:</c-><c- f>dateTime</c-> <c- p>;</c->
-    <c- nn>te</c-><c- p>:</c-><c- f>recipient</c-> <c- g>&lt;https://alcoholic-beverages.com></c-> <c- p>;</c->
-    <c- nn>te</c-><c- p>:</c-><c- f>rightsHolder</c-> <c- g>&lt;https://alice.org></c-> <c- p>;</c-> 
-    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedPolicyProvenance1</c-> <c- p>.</c->
+    <c- nn>te</c-><c- p>:</c-><c- f>rightsHolder</c-> <c- g>&lt;https://crew.boxport.com></c-><c- p>,</c-> <c- g>&lt;https://waterway.org></c-> <c- p>;</c-> 
+    <c- nn>te</c-><c- p>:</c-><c- f>recipient</c-> <c- g>&lt;https://boxport.com></c-> <c- p>;</c-> 
+    <c- nn>te</c-><c- p>:</c-><c- f>sign</c-> <c- nn>ex</c-><c- p>:</c-><c- f>signedPolicyProvenance2</c-> <c- p>.</c->
 </pre>
    </div>
-   <p><mark>TODO:</mark> (analogous as <a href="#age-verification">age verification use case</a>)</p>
+   <div class="example" id="data-unit-2">
+    <a class="self-link" href="#data-unit-2"></a> The spatioTemporal information from Bluewave, represented through a <a href="https://www.w3.org/TR/vocab-ssn/">SSN/SOSA</a> measurement.
+This information is generally retrieved by sensors capturing <a href="https://en.wikipedia.org/wiki/Automatic_identification_system">Automatic Identification System (AIS)</a> signals, which vessels are obliged to transmit. 
+<pre class="language-ttl highlight"><c- o>&lt;</c-><c- g>ex</c->:<c- g>AIS</c-><c- o>-</c-><c- g>measurement</c-><c- o>></c-> <c- g>a</c-> <c- g>sosa</c->:<c- g>Observation</c-> <c- c1>;</c->
+  <c- g>sosa</c->:<c- g>resultTime</c-> <c- u>"2024-02-12T11:20:10.999Z"</c-><c- o>^^</c-><c- g>xsd</c->:<c- g>dateTime</c-> <c- c1>;</c->
+  <c- g>sosa</c->:<c- g>hasSimpleResult</c-> <c- u>"POINT(4.37547 51.24607)"</c-><c- o>^^&lt;</c-><c- g>http</c->:<c- o>//</c-><c- g>www</c->.<c- g>opengis</c->.<c- g>net</c-><c- o>/</c-><c- g>ont</c-><c- o>/</c-><c- g>geosparql</c->#<c- g>wktLiteral</c-><c- o>></c-> <c- c1>;</c->
+</pre>
+   </div>
+   <p class="note" role="note"><span class="marker">Note:</span> The full SSN/SOSA deployment description from the waterway to sense AIS signals is omitted for brevity.</p>
+   <div class="example" id="policy-2">
+    <a class="self-link" href="#policy-2"></a> An ODRL policy with a permission rule that states that Boxport can use and distribute the <a href="#data-unit-2">data</a>. 
+<pre class="language-turtle highlight"><c- nn>ex</c-><c- p>:</c-><c- f>policy2</c-> <c- b>a</c-> <c- nn>odrl</c-><c- p>:</c-><c- f>Agreement</c-> <c- p>;</c->
+  <c- nn>odrl</c-><c- p>:</c-><c- f>uid</c-> <c- nn>ex</c-><c- p>:</c-><c- f>policy2</c-> <c- p>;</c->
+  <c- nn>odrl</c-><c- p>:</c-><c- f>permission</c-> <c- nn>ex</c-><c- p>:</c-><c- f>rule2</c-> <c- p>.</c->
+
+<c- nn>ex</c-><c- p>:</c-><c- f>rule2</c-> <c- b>a</c-> <c- nn>odrl</c-><c- p>:</c-><c- f>Permission</c-> <c- p>;</c->
+  <c- nn>odrl</c-><c- p>:</c-><c- f>assigner</c-> <c- g>&lt;https://waterway.org></c-> <c- p>;</c->
+  <c- nn>odrl</c-><c- p>:</c-><c- f>assignee</c-> <c- g>&lt;https://boxport.com></c-> <c- p>;</c->
+  <c- nn>odrl</c-><c- p>:</c-><c- f>action</c-> <c- nn>odrl</c-><c- p>:</c-><c- f>use</c-><c- p>,</c-> <c- nn>odrl</c-><c- p>:</c-><c- f>distribute</c-> <c- p>;</c->
+  <c- nn>odrl</c-><c- p>:</c-><c- f>target</c-> <c- nn>ex</c-><c- p>:</c-><c- f>AIS-measurement</c-> <c- p>.</c->
+</pre>
+   </div>
+   <div class="example" id="signatures-2">
+    <a class="self-link" href="#signatures-2"></a> The signatures for the waterway authority <a href="#trustenvelope-2">Trust Envelope</a> of a particular AIS measurement. 
+    <p>The <strong>Trust Envelope signature</strong> entails all triples related to the Trust Envelope (<a href="#trustenvelope-2"><code class="highlight"><c- nn>ex</c-><c- p>:</c-><c- f>envelope2</c-></code></a>)  (the data, the policy, and all the provenance and corresponding signatures as shown below) (apart from the signature itself)</p>
+<pre class="language-turtle highlight"><c- nn>ex</c-><c- p>:</c-><c- f>signedEnvelope2</c-> <c- b>a</c-> <c- nn>sign</c-><c- p>:</c-><c- f>Signature</c-> <c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>value</c-> <c- s>"..."</c-><c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>target</c-> <c- nn>ex</c-><c- p>:</c-><c- f>envelope2</c-> <c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>issuer</c-> <c- g>&lt;https://waterway.org></c-><c- p>.</c->
+</pre>
+    <p>The <strong>provenance signature</strong> entails all triples starting from provenance (<a href="#trustenvelope-2"><code class="highlight"><c- nn>ex</c-><c- p>:</c-><c- f>dataProvenance2</c-></code></a>) (apart from the signature itself) AND all triples related to the data (<a href="#data-unit-2"><code class="highlight"><c- nn>https</c-><c- p>:</c->//country<c- p>.</c->org/uuid<c- mi>2</c-></code></a>).</p>
+<pre class="language-turtle highlight"><c- nn>ex</c-><c- p>:</c-><c- f>signedDataProvenance2</c-> <c- b>a</c-> <c- nn>sign</c-><c- p>:</c-><c- f>Signature</c-> <c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>value</c-> <c- s>"..."</c-><c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>target</c-> <c- nn>ex</c-><c- p>:</c-><c- f>dataProvenance2</c-> <c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>issuer</c-> <c- g>&lt;https://waterway.org></c-><c- p>.</c->
+</pre>
+    <p>The <strong>policy signature</strong> entails all triples starting from policy provenance (<a href="#trustenvelope-2"><code class="highlight"><c- nn>ex</c-><c- p>:</c-><c- f>policyProvenance2</c-></code></a>) (apart from the signature itself) AND all triples related to the data (<a href="#policy-2"><code class="highlight"><c- nn>ex</c-><c- p>:</c-><c- f>policy2</c-></code></a>).</p>
+<pre class="language-turtle highlight"><c- nn>ex</c-><c- p>:</c-><c- f>signedPolicyProvenance1</c-> <c- b>a</c-> <c- nn>sign</c-><c- p>:</c-><c- f>Signature</c-> <c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>value</c-> <c- s>"..."</c-><c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>target</c-> <c- nn>ex</c-><c- p>:</c-><c- f>policyProvenance1</c-> <c- p>;</c->
+  <c- nn>sign</c-><c- p>:</c-><c- f>issuer</c-> <c- g>&lt;https://waterway.org></c-><c- p>.</c->
+</pre>
+   </div>
+   <p class="note" role="note"><span class="marker">Note:</span> The signatures <a href="#signatures-2">above</a> its structure is influenced by <a href="https://knowledgeonwebscale.github.io/rdf-context-associations/">RDF context associations</a>. Though currently, proper selection trough asserting a set of triples is not performed properly.</p>
    <h2 class="heading settled" data-level="6" id="legal"><span class="secno">6. </span><span class="content">Legal Considerations</span><a class="self-link" href="#legal"></a></h2>
    <p>The <a href="#model">Trust Envelope model</a> was developed to be regulation-agnostic,
 to be able to tackle legal requirements from different jurisdictions,
@@ -2590,13 +2633,15 @@ Trust Envelopes can be used as auditing tools by external legal authorities to a
 and possibly held as proof in judgments for the later case.</p>
    <h2 class="heading settled" data-level="7" id="namespaces"><span class="secno">7. </span><span class="content">Namespaces</span><a class="self-link" href="#namespaces"></a></h2>
    <p>Commonly used namespace prefixes used in this specification:</p>
-<pre class="language-turtle highlight"><c- k>@prefix</c-> <c- nn>dcterms:</c-> <c- g>&lt;http://purl.org/dc/terms/></c-> <c- p>.</c->
+<pre class="language-turtle highlight"><c- k>@prefix</c-> <c- nn>dcterms:</c-> <c- g>&lt;http://purl.org/dc/terms/></c-><c- p>.</c->
 <c- k>@prefix</c-> <c- nn>dpv:</c->     <c- g>&lt;http://www.w3.org/ns/dpv#></c-><c- p>.</c->
 <c- k>@prefix</c-> <c- nn>ex:</c->      <c- g>&lt;http://example.org/></c-><c- p>.</c->
 <c- k>@prefix</c-> <c- nn>odrl:</c->    <c- g>&lt;http://www.w3.org/ns/odrl/2/></c-><c- p>.</c->
-<c- k>@prefix</c-> <c- nn>rdf:</c->     <c- g>&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#></c-> <c- p>.</c->
+<c- k>@prefix</c-> <c- nn>rdf:</c->     <c- g>&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#></c-><c- p>.</c->
+<c- k>@prefix</c-> <c- nn>sosa:</c->    <c- g>&lt;http://www.w3.org/ns/sosa/></c-><c- p>.</c->
+<c- k>@prefix</c-> <c- nn>ssn:</c->     <c- g>&lt;http://www.w3.org/ns/ssn/></c-><c- p>.</c->
 <c- k>@prefix</c-> <c- nn>te:</c->      <c- g>&lt;https://w3id.org/trustenvelope#></c-><c- p>.</c->
-<c- k>@prefix</c-> <c- nn>xsd:</c->     <c- g>&lt;http://www.w3.org/2001/XMLSchema#></c-> <c- p>.</c->
+<c- k>@prefix</c-> <c- nn>xsd:</c->     <c- g>&lt;http://www.w3.org/2001/XMLSchema#></c-><c- p>.</c->
 </pre>
   </main>
   <div data-fill-with="conformance">

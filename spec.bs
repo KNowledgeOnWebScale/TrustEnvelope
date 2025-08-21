@@ -47,8 +47,6 @@ We introduce in the specification here Trust Envelopes, which is a unique carrie
 
 <mark>TODO:</mark> elaborate and make clear the importance of Trust Envelopes as technological solution for trust
 
-<mark>TODO:</mark> add navigation?
-
 ## Terminology ## {#terminology}
 The following terms are used to describe concepts in this specification. 
 
@@ -76,7 +74,15 @@ Model {#model}
 ==============
 
 
-<mark>TODO:</mark> Add figures here
+<figure id="trust-envelope-model">
+<img src="./img/trust-envelopes-model.png">
+<figcaption>Trust Envelope core components and involved entities.</figcaption>
+</figure>
+
+<figure id="trust-envelope-spec">
+<img src="./img/trust-envelopes-spec.png">
+<figcaption>Ontology Design Pattern for Trust Envelopes. Trust Envelope vocabulary terms, in yellow, include the `te` prefix.</figcaption>
+</figure>
 
 Vocabulary {#vocabulary}
 ========================
@@ -221,7 +227,7 @@ ex:policyProvenance1 a te:PolicyProvenance ;
 ```
 </div>
 
-<div class="example" highlight="turtle" id="data-unit-1"> 
+<div class="example" highlight="json" id="data-unit-1"> 
 A Verifiable Presentation containing proof that Alice her age is over 18.
 The proof is a Verifiable Credential issued by the government of her country.
 ```json-ld
@@ -357,13 +363,29 @@ ex:policyProvenance2 a te:PolicyProvenance ;
 </div>
 
 <div class="example" highlight="turtle" id="data-unit-2"> 
-The spatioTemporal information from Bluewave, represented through a [SSN/SOSA](https://www.w3.org/TR/vocab-ssn/) measurement.
+The spatio-temporal information from Bluewave, represented through a [SSN/SOSA](https://www.w3.org/TR/vocab-ssn/) Result.
 This information is generally retrieved by sensors capturing [Automatic Identification System (AIS)](https://en.wikipedia.org/wiki/Automatic_identification_system) signals, which vessels are obliged to transmit.
 
-```ttl
-<ex:AIS-measurement> a sosa:Observation ;
+```turtle
+<urn:uuid:12c01cd9-d09e-4e4d-9589-f4c3da1f6190> a sosa:Observation ;
   sosa:resultTime "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
-  sosa:hasSimpleResult "POINT(4.37547 51.24607)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+  sosa:hasResult <ex:AIS-measurement> .
+
+ex:AIS-measurement a sosa:Result ;
+  sosa:isResultOf <urn:uuid:12c01cd9-d09e-4e4d-9589-f4c3da1f6190> ;
+  <https://dbpedia.org/page/Category/MMSI_Number> "3b7455b3a0f78a47b7ddac16250dbc22";
+  <https://dbpedia.org/ontology/destination> "ANTWERP";
+  <https://dbpedia.org/page/Estimated_time_of_arrival> "12-02 06:00";
+  <https://dbpedia.org/ontology/shipDraft> "3.6";
+  <https://dbpedia.org/page/Course_(navigation)/> "155.4";
+  <http://www.example.com/AISnavstat> "5";
+  <https://dbpedia.org/page/Heading_(navigation)/> "91";
+  <https://dbpedia.org/page/Rotation> "0";
+  <https://dbpedia.org/page/speed> "0";
+  geo:latitude "51.24607";
+  geo:longitude "4.37544";
+  geo:elevation "5.5".
+
 ```
 </div>
 
@@ -405,16 +427,101 @@ ex:signedDataProvenance2 a sign:Signature ;
 
 The **policy signature** entails all triples starting from policy provenance ([`ex:policyProvenance2`](#trustenvelope-2)) (apart from the signature itself) AND all triples related to the data ([`ex:policy2`](#policy-2)).
 ```turtle
-ex:signedPolicyProvenance1 a sign:Signature ;
+ex:signedPolicyProvenance2 a sign:Signature ;
   sign:value "...";
-  sign:target ex:policyProvenance1 ;
+  sign:target ex:policyProvenance2 ;
   sign:issuer <https://waterway.org>.
 ```
 </div>
 
 Note: The signatures [above](#signatures-2) its structure is influenced by [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/). Though currently, proper selection trough asserting a set of triples is not performed properly.
 
+<div class="example" highlight="turtle" id="trustenvelope-3"> 
+Trust Envelope issued by Boxport to allow Beverage Company to track its cargo.
+```turtle
+ex:envelope3 a te:TrustEnvelope ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    dpv:hasData ex:cargo-location ; 
+    odrl:hasPolicy ex:policy3 ;
+    te:provenance ex:dataProvenance3, ex:policyProvenance3 ;
+    te:sign ex:signedEnvelope3 .
 
+ex:dataProvenance3 a te:DataProvenance ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    te:sender <https://boxport.com> ; 
+    eu-dga:hasDataHolder <https://boxport.com>  ; 
+    te:sign ex:signedDataProvenance3 .
+
+ex:policyProvenance3 a te:PolicyProvenance ;
+    dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+    te:rightsHolder <https://crew.boxport.com>, <https://boxport.org> ;
+    te:recipient <https://beverage-company.com> ; 
+    te:sign ex:signedPolicyProvenance3 .
+```
+</div>
+
+<div class="example" highlight="turtle" id="data-unit-3"> 
+The spatio-temporal information of the cargo that Beverage Company is monitoring.
+This has been transformed from `ex:AIS-measurement` from the [data](#data-unit-2) from the Waterway authority.
+
+```turtle
+ex:cargo-location dcterms:issued "2024-02-12T11:20:10.999Z"^^xsd:dateTime ;
+  geo:latitude "51.24607";
+  geo:longitude "4.37544";
+  geo:elevation "5.5".
+```
+</div>
+
+<div class="example" highlight="turtle" id="policy-3"> 
+An ODRL policy with a permission rule that states that Beverage Company can use the [data](#data-unit-3) for the purpose of estimating the time of arrival.
+```turtle
+ex:policy3 a odrl:Agreement ;
+  odrl:uid ex:policy3 ;
+  odrl:permission ex:rule3 .
+
+ex:rule3 a odrl:Permission ;
+  odrl:assigner <https://boxport.com> ;
+  odrl:assignee <https://beverage-company.com> ;
+  odrl:action odrl:use ;
+  odrl:target ex:cargo-location ;
+  odrl:constraint ex:constaint3 .
+
+ex:constraint3 a odrl:Constraint ;
+  odrl:leftOperand odrl:purpose ;
+  odrl:operator odrl:eq ;
+  odrl:rightOperand "Estimating the time of arrival" .
+```
+</div>
+
+<div class="example" highlight="turtle" id="signatures-3"> 
+The signatures for the Boxport [Trust Envelope](#trustenvelope-3) of the location of the cargo from Beverage Company.
+
+The **Trust Envelope signature** entails all triples related to the Trust Envelope ([`ex:envelope3`](#trustenvelope-3))  (the data, the policy, and all the provenance and corresponding signatures as shown below) (apart from the signature itself)
+```turtle
+ex:signedEnvelope3 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:envelope3 ;
+  sign:issuer <https://boxport.com>.
+```
+
+The **provenance signature** entails all triples starting from provenance ([`ex:dataProvenance3`](#trustenvelope-3)) (apart from the signature itself) AND all triples related to the data ([`https://country.org/uuid3`](#data-unit-3)).
+```turtle
+ex:signedDataProvenance3 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:dataProvenance3 ;
+  sign:issuer <https://boxport.com>.
+```
+
+The **policy signature** entails all triples starting from policy provenance ([`ex:policyProvenance3`](#trustenvelope-3)) (apart from the signature itself) AND all triples related to the data ([`ex:policy3`](#policy-3)).
+```turtle
+ex:signedPolicyProvenance3 a sign:Signature ;
+  sign:value "...";
+  sign:target ex:policyProvenance3 ;
+  sign:issuer <https://boxport.com>.
+```
+</div>
+
+Note: The signatures [above](#signatures-2) its structure is influenced by [RDF context associations](https://knowledgeonwebscale.github.io/rdf-context-associations/). Though currently, proper selection trough asserting a set of triples is not performed properly.
 
 Legal Considerations {#legal}
 =============================
@@ -449,7 +556,7 @@ Commonly used namespace prefixes used in this specification:
 @prefix dcterms: <http://purl.org/dc/terms/>.
 @prefix dpv:     <http://www.w3.org/ns/dpv#>.
 @prefix ex:      <http://example.org/>.
-@prefix odrl:    <http://www.w3.org/ns/odrl/2/>.
+geo:>.@prefix odrl:    <http://www.w3.org/ns/odrl/2/>.
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix sosa:    <http://www.w3.org/ns/sosa/>.
 @prefix ssn:     <http://www.w3.org/ns/ssn/>.
